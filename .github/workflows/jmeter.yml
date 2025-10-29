@@ -20,9 +20,10 @@ jobs:
 
     # Run JMeter test from your custom image
     - name: Run JMeter test in Docker
-      run: |
+       run: |
         docker run --rm \
           -v ${{ github.workspace }}:/jmeter \
+          -e JVM_ARGS="-Xms1g -Xmx1g" \
           custom-jmeter \
           jmeter -n \
                  -t /jmeter/DevCon-Demo-Script_v2.jmx \
@@ -30,10 +31,7 @@ jobs:
                  -e -o /jmeter/results/html \
                  -p /jmeter/user.properties \
                  -j /jmeter/results/jmeter.log \
-                 -Jjmeter.save.saveservice.output_format=csv \
-                 -Xms1g -Xmx1g
-
-
+                 -Jjmeter.save.saveservice.output_format=csv
 
     # Upload HTML Report (new action version )
     - name: Upload HTML Report
