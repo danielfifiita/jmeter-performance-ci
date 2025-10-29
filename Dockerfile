@@ -22,8 +22,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /opt
 RUN wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz && \
     tar -xzf apache-jmeter-${JMETER_VERSION}.tgz && \
-    rm apache-jmeter-${JMETER_VERSION}.tgz && \
-    mv apache-jmeter-${JMETER_VERSION} ${JMETER_HOME}
+    rm apache-jmeter-${JMETER_VERSION}.tgz
+
 
 # Step 5: Download and install PluginManager + CmdRunner
 WORKDIR ${JMETER_LIB}
