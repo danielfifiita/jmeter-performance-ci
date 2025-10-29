@@ -28,13 +28,20 @@ jobs:
             -e -o /tests/results/html
 
       - name: Upload HTML Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jmeter-html-report
           path: jmeter/results/html
 
       - name: Upload Raw Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jmeter-jtl-results
           path: jmeter/results/results.jtl
+          
+      - name: Deploy report to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: jmeter/results/html
