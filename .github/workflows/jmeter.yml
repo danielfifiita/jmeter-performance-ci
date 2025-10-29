@@ -17,6 +17,10 @@ jobs:
     # Build custom Docker image
     - name: Build custom JMeter Docker image
       run: docker build -t custom-jmeter .
+      
+    # Create results directory before running JMeter
+    - name: Create results directory
+      run: mkdir -p results/html results
 
     # Run JMeter test from your custom image
     - name: Run JMeter test in Docker
