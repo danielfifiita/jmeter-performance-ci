@@ -22,6 +22,8 @@
           </elementProp>
         </collectionProp>
       </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
     </TestPlan>
     <hashTree>
       <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults">
@@ -52,7 +54,7 @@
         <stringProp name="TestPlan.comments">We will generate a random variable for each THREAD (Virtual User).</stringProp>
       </RandomVariableConfig>
       <hashTree/>
-      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="RandomVariable_GeneratorToCSV">
+      <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="RandomVariable_GeneratorToCSV" enabled="true">
         <stringProp name="cacheKey">true</stringProp>
         <stringProp name="filename"></stringProp>
         <stringProp name="parameters"></stringProp>
@@ -128,7 +130,7 @@ log.info(&quot;Generated random values -&gt; ${line.trim()}&quot;)
         <stringProp name="scriptLanguage">groovy</stringProp>
       </JSR223PreProcessor>
       <hashTree/>
-      <com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup guiclass="com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroupGui" testclass="com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup" testname="JSONPlaceholder - CTG">
+      <com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup guiclass="com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroupGui" testclass="com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup" testname="JSONPlaceholder - CTG" enabled="true">
         <elementProp name="ThreadGroup.main_controller" elementType="com.blazemeter.jmeter.control.VirtualUserController"/>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <stringProp name="TargetLevel">12</stringProp>
@@ -141,7 +143,7 @@ log.info(&quot;Generated random values -&gt; ${line.trim()}&quot;)
         <stringProp name="Unit">S</stringProp>
       </com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup>
       <hashTree>
-        <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Pacing - 5s Delay">
+        <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Pacing - 5s Delay" enabled="true">
           <stringProp name="ConstantTimer.delay">5000</stringProp>
         </ConstantTimer>
         <hashTree/>
@@ -238,7 +240,7 @@ if (!titleIssues.isEmpty() || !bodyIssues.isEmpty() || !userIdIssues.isEmpty()) 
             </elementProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract userId">
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract userId" enabled="true">
               <stringProp name="JSONPostProcessor.referenceNames">userId</stringProp>
               <stringProp name="JSONPostProcessor.jsonPathExprs">$.userId</stringProp>
               <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
@@ -270,7 +272,7 @@ if (!titleIssues.isEmpty() || !bodyIssues.isEmpty() || !userIdIssues.isEmpty()) 
             <hashTree/>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="T03_Create" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="T03_Create">
           <boolProp name="TransactionController.parent">true</boolProp>
           <boolProp name="TransactionController.includeTimers">true</boolProp>
         </TransactionController>
@@ -321,12 +323,12 @@ if (prev.getResponseDataAsString().length() &lt; 50) {
             <hashTree/>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="T03_Update" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="T04_Update">
           <boolProp name="TransactionController.parent">true</boolProp>
           <boolProp name="TransactionController.includeTimers">true</boolProp>
         </TransactionController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT /posts/${id}">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PUT /posts/${id}" enabled="true">
             <stringProp name="HTTPSampler.path">/posts/${id}</stringProp>
             <stringProp name="HTTPSampler.method">PUT</stringProp>
             <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
@@ -359,7 +361,7 @@ if (prev.getResponseDataAsString().length() &lt; 50) {
             <hashTree/>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="T03_Delete" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="T05_Delete">
           <boolProp name="TransactionController.parent">true</boolProp>
           <boolProp name="TransactionController.includeTimers">true</boolProp>
         </TransactionController>
@@ -387,7 +389,7 @@ if (prev.getResponseDataAsString().length() &lt; 50) {
           </hashTree>
         </hashTree>
       </hashTree>
-      <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="Backend Listener- InfluxDB">
+      <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="Backend Listener- InfluxDB" enabled="true">
         <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments">
           <collectionProp name="Arguments.arguments">
             <elementProp name="influxdbMetricsSender" elementType="Argument">
