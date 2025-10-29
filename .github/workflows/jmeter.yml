@@ -1,49 +1,53 @@
-name: Run JMeter Performance Tests
+name: jmeter-test
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ "main", "master" ]
+  workflow_dispatch:
 
 jobs:
-  jmeter-test:
+  jmeter-ci:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    # Checkout source code
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      - name: Build custom JMeter Docker image
-        run: docker build -t custom-jmeter .
+    # Build custom Docker image
+    - name: Build custom JMeter Docker image
+      run: docker build -t custom-jmeter .
 
+    # Run JMeter test from your custom image
+    - name: Run JMeter test
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/jmeter \
+          custom-jmeter \
+          -n -t /jmeter/DevCon-Demo-Script_v2.jmx \
+          -p /jmeter/user.properties \
+          -l /jmeter/results/results.jtl \
+          -e -o /jmeter/results/html \
+          -Jjmeter.save.saveservice.output_format=csv \
+          -Xms512m -Xmx1024m
 
-      - name: Run JMeter test
-          run: |
-            docker run --rm -v ${{ github.workspace }}/jmeter:/jmeter \
-              custom-jmeter \
-              jmeter -n \
-              -t /jmeter/testplan.jmx \
-              -l /jmeter/results/results.jtl \
-              -e -o /jmeter/results/html \
-              -q /jmeter/user.properties \
-              -Xms512m -Xmx1024m
+    # Upload HTML Report (new action version )
+    - name: Upload HTML Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: jmeter-html-report
+        path: results/html
 
+    # Upload raw JTL Results
+    - name: Upload Raw Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: jmeter-jtl-results
+        path: results/results.jtl
 
-      - name: Upload HTML Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: jmeter-html-report
-          path: jmeter/results/html
-
-      - name: Upload Raw Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: jmeter-jtl-results
-          path: jmeter/results/results.jtl
-          
-      - name: Deploy report to GitHub Pages
-        if: success()
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: jmeter/results/html
+    # Deploy to GitHub Pages
+    - name: Deploy report to GitHub Pages
+      if: success()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: results/html
