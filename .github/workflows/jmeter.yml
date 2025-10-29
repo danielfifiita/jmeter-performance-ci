@@ -20,7 +20,7 @@ jobs:
 
     # Run JMeter test from your custom image
     - name: Run JMeter test in Docker
-       run: |
+      run: |
         docker run --rm \
           -v ${{ github.workspace }}:/jmeter \
           -e JVM_ARGS="-Xms1g -Xmx1g" \
