@@ -19,16 +19,20 @@ jobs:
       run: docker build -t custom-jmeter .
 
     # Run JMeter test from your custom image
-    - name: Run JMeter Test
-      run: |
-        docker run --rm -v ${{ github.workspace }}:/jmeter custom-jmeter \
-          jmeter -n -t /jmeter/DevCon-Demo-Script_v2.jmx \
-                 -l /jmeter/results/results.jtl \
-                 -e -o /jmeter/results/html \
-                 -p /jmeter/user.properties \
-                 -j /jmeter/results/jmeter.log \
-                 -Jjmeter.save.saveservice.output_format=csv \
-                 -Xms1g -Xmx1g
+   - name: Run JMeter test in Docker
+  run: |
+    docker run --rm \
+      -v ${{ github.workspace }}:/jmeter \
+      custom-jmeter \
+      jmeter -n \
+             -t /jmeter/DevCon-Demo-Script_v2.jmx \
+             -l /jmeter/results/results.jtl \
+             -e -o /jmeter/results/html \
+             -p /jmeter/user.properties \
+             -j /jmeter/results/jmeter.log \
+             -Jjmeter.save.saveservice.output_format=csv \
+             -Xms1g -Xmx1g
+
 
 
     # Upload HTML Report (new action version )
