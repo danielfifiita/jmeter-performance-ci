@@ -8,10 +8,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG JMETER_VERSION="5.6.3"
 ARG CMDRUNNER_JAR_VERSION="2.2.1"
 ARG JMETER_PLUGINS_MANAGER_VERSION="1.6"
-ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
-ENV JMETER_BIN ${JMETER_HOME}/bin
-ENV JMETER_LIB ${JMETER_HOME}/lib
-ENV JMETER_PLUGINS ${JMETER_LIB}/ext
+ENV JMETER_HOME=/opt/apache-jmeter-${JMETER_VERSION}
+ENV JMETER_BIN=${JMETER_HOME}/bin
+ENV JMETER_LIB=${JMETER_HOME}/lib
+ENV JMETER_PLUGINS=${JMETER_LIB}/ext
 
 # Step 3: Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -19,18 +19,25 @@ RUN apt-get update && apt-get install -y \
     update-ca-certificates
 
 # Step 4: Download and extract JMeter
+WORKDIR /opt
 RUN wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz && \
-    tar -xzf apache-jmeter-${JMETER_VERSION}.tgz -C /opt && \
-    rm apache-jmeter-${JMETER_VERSION}.tgz
+    tar -xzf apache-jmeter-${JMETER_VERSION}.tgz && \
+    rm apache-jmeter-${JMETER_VERSION}.tgz && \
+    mv apache-jmeter-${JMETER_VERSION} ${JMETER_HOME}
 
-# Step 5: Download and install PluginManager and CmdRunner
+# Step 5: Download and install PluginManager + CmdRunner
 WORKDIR ${JMETER_LIB}
 RUN wget https://repo1.maven.org/maven2/kg/apc/cmdrunner/${CMDRUNNER_JAR_VERSION}/cmdrunner-${CMDRUNNER_JAR_VERSION}.jar
 
 WORKDIR ${JMETER_PLUGINS}
 RUN wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/${JMETER_PLUGINS_MANAGER_VERSION}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar
 
-# Step 6: Install specific JMeter plugins
+# Step 6: Download PluginsManagerCMD.sh
+WORKDIR ${JMETER_BIN}
+RUN wget https://raw.githubusercontent.com/undera/jmeter-plugins-manager/master/PluginsManagerCMD.sh && \
+    chmod +x PluginsManagerCMD.sh
+
+# Step 7: Install plugins
 WORKDIR ${JMETER_LIB}
 RUN java -cp ${JMETER_LIB}/cmdrunner-${CMDRUNNER_JAR_VERSION}.jar \
     org.jmeterplugins.repository.PluginManagerCMD install \
@@ -39,7 +46,7 @@ RUN java -cp ${JMETER_LIB}/cmdrunner-${CMDRUNNER_JAR_VERSION}.jar \
     jpgc-json \
     jpgc-graphs-basic
 
-# Step 7: Set ENV and default CMD
-ENV PATH=$JMETER_BIN:$PATH
-WORKDIR $JMETER_HOME
+# Step 8: Set path and default command
+ENV PATH="${JMETER_BIN}:${PATH}"
+WORKDIR ${JMETER_HOME}
 CMD ["jmeter", "--version"]
