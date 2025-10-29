@@ -16,16 +16,18 @@ jobs:
       - name: Build custom JMeter Docker image
         run: docker build -t custom-jmeter .
 
+
       - name: Run JMeter test
-        run: |
-          mkdir -p jmeter/results
-          docker run --rm \
-            -v ${{ github.workspace }}/jmeter:/tests \
-            custom-jmeter \
-            -n -t /tests/test_plan.jmx \
-            -p /tests/user.properties \
-            -l /tests/results/results.jtl \
-            -e -o /tests/results/html
+          run: |
+            docker run --rm -v ${{ github.workspace }}/jmeter:/jmeter \
+              custom-jmeter \
+              jmeter -n \
+              -t /jmeter/testplan.jmx \
+              -l /jmeter/results/results.jtl \
+              -e -o /jmeter/results/html \
+              -q /jmeter/user.properties \
+              -Xms512m -Xmx1024m
+
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
