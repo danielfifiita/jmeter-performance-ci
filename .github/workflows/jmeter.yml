@@ -19,7 +19,7 @@ jobs:
       run: docker build -t custom-jmeter .
 
     # Run JMeter test from your custom image
-   - name: Run JMeter test in Docker
+    - name: Run JMeter test in Docker
       run: |
         docker run --rm \
           -v ${{ github.workspace }}:/jmeter \
