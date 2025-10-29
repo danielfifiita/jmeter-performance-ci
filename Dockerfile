@@ -1,4 +1,4 @@
-FROM justb4/jmeter:latest
+FROM justb4/jmeter:5:5
 
 # Install extra plugins via PluginManager
 RUN /opt/apache-jmeter/bin/PluginsManagerCMD.sh install \
