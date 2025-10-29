@@ -34,7 +34,7 @@ RUN wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/${JMETER_P
 
 # Step 6: Download PluginsManagerCMD.sh
 WORKDIR ${JMETER_BIN}
-RUN wget https://raw.githubusercontent.com/undera/jmeter-plugins-manager/master/PluginsManagerCMD.sh && \
+RUN wget https://raw.githubusercontent.com/undera/jmeter-plugins/master/bin/PluginsManagerCMD.sh && \
     chmod +x PluginsManagerCMD.sh
 
 # Step 7: Install plugins
