@@ -1,0 +1,40 @@
+name: Run JMeter Performance Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  jmeter-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Build custom JMeter Docker image
+        run: docker build -t custom-jmeter .
+
+      - name: Run JMeter test
+        run: |
+          mkdir -p jmeter/results
+          docker run --rm \
+            -v ${{ github.workspace }}/jmeter:/tests \
+            custom-jmeter \
+            -n -t /tests/test_plan.jmx \
+            -p /tests/user.properties \
+            -l /tests/results/results.jtl \
+            -e -o /tests/results/html
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jmeter-html-report
+          path: jmeter/results/html
+
+      - name: Upload Raw Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: jmeter-jtl-results
+          path: jmeter/results/results.jtl
