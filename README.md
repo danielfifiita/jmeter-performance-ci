@@ -49,7 +49,7 @@ This project showcases how to run **Automated JMeter Performance Tests** using:
         ┃ ┗ jmeter-test.yml # GitHub Actions workflow file
         ┣ 📂 jmeter/
         ┃ ┣ DevCon-Demo-Script_v2.jmx # JMeter test script using public APIs.
-        ┃ ┣ user.properties # Backend Listener config
+        ┃ ┣ user.properties # Backend Listener config + Jmeter Configs for reporting, filtering and whatever you need
         ┃ ┗ 📂 results/
         ┃ ┣ results.jtl # Raw test data
         ┃ ┗ html/ # HTML performance report
