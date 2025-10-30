@@ -25,14 +25,11 @@ RUN wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-${JMETER_VERSIO
 # Step 5: Install CASUTG plugin manually (no PluginManager)
 WORKDIR ${JMETER_HOME}
 RUN wget https://jmeter-plugins.org/files/packages/jpgc-casutg-2.10.zip && \
-    unzip jpgc-casutg-2.10.zip -d casutg-plugin && \
-    mv casutg-plugin/lib/*.jar ${JMETER_LIB} && \
-    rm -rf casutg-plugin jpgc-casutg-2.10.zip
+    unzip jpgc-casutg-2.10.zip -d /tmp/casutg && \
+    cp /tmp/casutg/lib/*.jar ${JMETER_LIB}/ && \
+    cp /tmp/casutg/lib/ext/*.jar ${JMETER_PLUGINS}/
 
-# Step 6: Optional — install other plugins manually if needed
-# Repeat same pattern as above for other plugins
-
-# Step 7: Set environment and default command
+# Step 6: Set environment and default command
 ENV PATH=${JMETER_BIN}:$PATH
 WORKDIR ${JMETER_HOME}
 CMD ["jmeter", "--version"]
