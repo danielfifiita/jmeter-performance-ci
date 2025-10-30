@@ -33,7 +33,7 @@ jobs:
           -t /jmeter/DevCon-Demo-Script_v2.jmx \
           -l /jmeter/results/results.jtl \
           -e -o /jmeter/results/html \
-          -p /jmeter/user.properties \
+          -q /jmeter/user.properties \
           -j /jmeter/results/jmeter.log \
           -Jjmeter.save.saveservice.output_format=csv
 
